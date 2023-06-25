@@ -80,6 +80,7 @@ export const PostContentHeader = styled.header`
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 2rem;
 
       div {
         display: flex;
