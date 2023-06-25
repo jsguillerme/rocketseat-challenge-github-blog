@@ -1,9 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
+import { useNavigate } from 'react-router-dom'
 import { CardContainer, CardContentHeader, CardContentSummary } from './style'
 
 export function Card() {
+  const navigate = useNavigate()
+
+  function handleViewPost() {
+    navigate({ pathname: '/post' })
+  }
+
   return (
-    <CardContainer>
+    <CardContainer onClick={handleViewPost}>
       <CardContentHeader>
         <h2>JavaScript data types and data structures</h2>
         <span>Há 1 dia</span>

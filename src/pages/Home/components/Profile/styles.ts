@@ -17,7 +17,7 @@ export const ProfileContainer = styled.div`
 export const ProfileContent = styled.div`
   width: 100%;
   height: 100%;
-  padding: 3.2rem 10rem;
+  padding: 3.2rem 8rem;
 
   img {
     width: 15rem;
@@ -28,7 +28,7 @@ export const ProfileContent = styled.div`
 
   display: flex;
   align-items: center;
-  gap: 3.2rem;
+  gap: 4rem;
 
   p {
     font-size: 1.5rem;
@@ -37,10 +37,11 @@ export const ProfileContent = styled.div`
   }
 `
 export const ProfileDetailsInfo = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 2rem;
 
   color: ${(props) => props.theme.white};
 `
