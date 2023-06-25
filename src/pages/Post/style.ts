@@ -102,9 +102,9 @@ export const PostContentHeader = styled.header`
 `
 export const PostContentDetails = styled.main`
   width: 100%;
-  height: 17rem;
+  height: 100%;
   max-width: 1120px;
-  padding: 3.2rem 6rem;
+  padding: 4.2rem 7rem;
 
   background: transparent;
 
@@ -112,8 +112,15 @@ export const PostContentDetails = styled.main`
   font-size: 1.6rem;
   line-height: 160%;
 
+  text-align: start;
+
   a {
     text-decoration: none;
     color: ${(props) => props.theme.blue};
+  }
+
+  img {
+    width: 90rem;
+    height: 50rem;
   }
 `

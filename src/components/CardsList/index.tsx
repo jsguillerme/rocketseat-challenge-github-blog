@@ -9,7 +9,16 @@ export function CardsList() {
   return (
     <CardListContainer>
       {issues.map((issue) => {
-        return <Card key={issue.id} />
+        return (
+          <Card
+            key={issue.id}
+            content={issue.content}
+            id={issue.id}
+            createdAt={issue.createdAt}
+            title={issue.title}
+            issueNumber={issue.issueNumber}
+          />
+        )
       })}
     </CardListContainer>
   )

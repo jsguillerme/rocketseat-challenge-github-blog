@@ -2,33 +2,35 @@
 import { useNavigate } from 'react-router-dom'
 import { CardContainer, CardContentHeader, CardContentSummary } from './style'
 
-export function Card() {
+interface CardProps {
+  content: string
+  title: string
+  createdAt: string
+  id: number
+  issueNumber: number
+}
+
+export function Card({
+  content,
+  title,
+  createdAt,
+  id,
+  issueNumber,
+}: CardProps) {
   const navigate = useNavigate()
 
   function handleViewPost() {
-    navigate({ pathname: '/post' })
+    navigate({ pathname: `/posts/${id}` })
   }
 
   return (
     <CardContainer onClick={handleViewPost}>
       <CardContentHeader>
-        <h2>JavaScript data types and data structures</h2>
-        <span>Há 1 dia</span>
+        <h2>{title}</h2>
+        <span>{createdAt}</span>
       </CardContentHeader>
       <CardContentSummary>
-        <p>
-          Programming languages all have built-in data structures, but these
-          often differ from one language to another. This article attempts to
-          list the built-in data structures available in JavaScript and what
-          properties they have. These can be used to build other data
-          structures. Wherever possible, comparisons with other languages are
-          drawn. Dynamic typing JavaScript is a loosely typed and dynamic
-          language. Variables in JavaScript are not directly associated with any
-          particular value type, and any variable can be assigned (and
-          re-assigned) values of all types: let foo = 42; // foo is now a number
-          foo = 'bar'; // foo is now a string foo = true; // foo is now a
-          boolean
-        </p>
+        <p>{content}</p>
       </CardContentSummary>
     </CardContainer>
   )

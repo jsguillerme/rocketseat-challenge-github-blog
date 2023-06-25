@@ -9,7 +9,7 @@ export function AppRouter() {
       <Banner />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/post" element={<Post />} />
+        <Route path={`/posts/:id`} element={<Post />} />
       </Routes>
     </Router>
   )

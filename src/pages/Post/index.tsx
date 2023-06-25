@@ -1,7 +1,8 @@
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { IssueContext, RepoIssueProps } from '../../contexts/IssueContext'
 import ReactMarkdown from 'react-markdown'
 // import SyntaxHighlighter from 'react-syntax-highlighter'
 // import dracula from 'react-syntax-highlighter/dist/esm/styles/hljs/dracula'
-
 import {
   Calendar,
   ChevronLeft,
@@ -9,74 +10,59 @@ import {
   Github,
   MessageCircle,
 } from 'lucide-react'
+
 import {
   PostContainer,
   PostContent,
   PostContentHeader,
   PostContentDetails,
 } from './style'
+import { useParams } from 'react-router-dom'
 
 export function Post() {
-  const content = `Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in JavaScript and what properties they have. These can be used to build other data structures. Wherever possible, comparisons with other languages are drawn.
+  const { issues } = useContext(IssueContext)
+  const { id } = useParams()
+  const [post, setPost] = useState<RepoIssueProps>()
 
-  ${'[Dynamic typing](https://github.com/jsguillerme)'}
-  JavaScript is a loosely typed and dynamic language. Variables in JavaScript are not directly associated with any particular value type, and any variable can be assigned (and re-assigned) values of all types:`
+  const searchIssueById = useCallback(
+    (id: number) => {
+      return setPost(issues.filter((issue) => issue.id === id)[0])
+    },
+    [issues],
+  )
 
-  // const markdown = `A paragraph with *emphasis* and **strong importance**.
-
-  //   > A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-  //   * Lists
-  //   * [ ] todo
-  //   * [x] done
-
-  //   A table:
-
-  //   | a | b |
-  //   | - | - |
-  // `
-
-  // {() => {
-  //   return (
-  //     <div>
-  //       <p>Here is some JavaScript code:</p>
-  //       <pre>
-  //         <SyntaxHighlighter language="js" style={dracula} PreTag="div">
-  //           {markdown}
-  //         </SyntaxHighlighter>
-  //       </pre>
-  //     </div>
-  //   )
-  // }}
+  useEffect(() => {
+    searchIssueById(Number(id))
+  }, [searchIssueById, id])
 
   return (
     <PostContainer>
       <PostContent>
         <PostContentHeader>
           <section>
-            <a href="#">
+            <a href="/">
               <ChevronLeft />
               <p>VOLTAR</p>
             </a>
-            <a href="#">
+            <a href={post?.repositoryUrl}>
               <p>VER NO GITHUB</p>
               <ExternalLink />
             </a>
           </section>
           <main>
-            <h2>JavaScript data types and data structures</h2>
+            <h2>{post?.title}</h2>
             <div>
               <div>
                 <Github />
-                <span>Cameronwll</span>
+                <span>{post?.user.login}</span>
               </div>
               <div>
                 <Calendar />
-                <span>Há 1 dia</span>
+                <span>{post?.createdAt}</span>
               </div>
               <div>
                 <MessageCircle />
-                <span>5 comentários</span>
+                <span>{post?.quantityComment} comentário(s)</span>
               </div>
             </div>
           </main>
@@ -84,7 +70,7 @@ export function Post() {
       </PostContent>
 
       <PostContentDetails>
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown>{post?.content || ''}</ReactMarkdown>
       </PostContentDetails>
     </PostContainer>
   )
