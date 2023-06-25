@@ -9,7 +9,7 @@ import {
   ProfileDetailsInfo,
 } from './styles'
 
-interface UserGithubProfile {
+interface UserGithubProfileProps {
   avatar_url: string
   github_name: string
   github_bio: string
@@ -20,7 +20,7 @@ interface UserGithubProfile {
 }
 
 export function Profile() {
-  const [userGithub, setUserGithub] = useState<UserGithubProfile>()
+  const [userGithub, setUserGithub] = useState<UserGithubProfileProps>()
 
   async function getUser() {
     const response = await API_AXIOS.get('/users/jsguillerme')
