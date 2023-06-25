@@ -1,7 +1,7 @@
 import { useContext } from 'react'
+import { IssueContext } from '../../contexts/IssueContext'
 import { Card } from './Card'
 import { CardListContainer } from './styles'
-import { IssueContext } from '../../contexts/IssueContext'
 
 export function CardsList() {
   const { issues } = useContext(IssueContext)

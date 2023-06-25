@@ -1,3 +1,6 @@
+import { useParams } from 'react-router-dom'
+import { formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { IssueContext, RepoIssueProps } from '../../contexts/IssueContext'
 import ReactMarkdown from 'react-markdown'
@@ -17,7 +20,6 @@ import {
   PostContentHeader,
   PostContentDetails,
 } from './style'
-import { useParams } from 'react-router-dom'
 
 export function Post() {
   const { issues } = useContext(IssueContext)
@@ -58,7 +60,15 @@ export function Post() {
               </div>
               <div>
                 <Calendar />
-                <span>{post?.createdAt}</span>
+                <span>
+                  {formatDistanceToNow(
+                    new Date(post?.createdAt || new Date()),
+                    {
+                      addSuffix: true,
+                      locale: ptBR,
+                    },
+                  )}
+                </span>
               </div>
               <div>
                 <MessageCircle />

@@ -26,7 +26,7 @@ export const CardContentHeader = styled.header`
   justify-content: space-between;
 
   h2 {
-    max-width: 28rem;
+    max-width: 22rem;
     font-size: 2rem;
     line-height: 160%;
     color: ${(props) => props.theme['base-title']};
@@ -40,7 +40,7 @@ export const CardContentHeader = styled.header`
 `
 export const CardContentSummary = styled.section`
   color: ${(props) => props.theme['base-text']};
-  max-height: 14rem;
+  max-height: 13rem;
   overflow: hidden;
 
   p {

@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from 'react'
-import { API_AXIOS } from '../lib/axios'
+import { API_AXIOS, API_AXIOS_ISSUES } from '../lib/axios'
 
 export interface RepoIssueProps {
   id: number
@@ -23,7 +23,8 @@ interface IssueProviderProps {
 
 interface IssueContextType {
   issues: RepoIssueProps[]
-  fetchIssues: (query?: string) => Promise<void>
+  fetchIssues: () => Promise<void>
+  fetchIssuesByQuery: (query: string) => Promise<void>
   getIssueById: (id: string) => Promise<void>
 }
 
@@ -36,29 +37,75 @@ export function IssueProvider({ children }: IssueProviderProps) {
     const response = await API_AXIOS.get(
       '/repos/jsguillerme/rocketseat-challenge-github-blog/issues',
     )
-    console.log(response.data)
+
     if (!response.data.length) {
       return
     }
 
     response.data.map((issue: any) => {
-      return setIssues([
-        {
-          title: issue.title,
-          content: issue.body,
-          createdAt: issue.created_at,
-          id: issue.id,
-          quantityComment: issue.comments,
-          repositoryUrl: issue.html_url,
-          closedAt: issue.closed_at,
-          issueNumber: issue.number,
-          user: {
-            url: issue.user.html_url,
-            avatarUrl: issue.user.avatar_url,
-            login: issue.user.login,
+      return setIssues((state) => {
+        return [
+          ...state,
+          {
+            content: issue.body,
+            createdAt: issue.created_at,
+            id: issue.id,
+            issueNumber: issue.number,
+            quantityComment: issue.comments,
+            repositoryUrl: issue.html_url,
+            title: issue.title,
+            user: {
+              avatarUrl: issue.user.avatar_url,
+              login: issue.user.login,
+              url: issue.user.html_url,
+            },
+            closedAt: issue.closed_at,
           },
-        },
-      ])
+        ]
+      })
+    })
+  }
+
+  async function fetchIssuesByQuery(query: string) {
+    if (query.trim() === '') {
+      setIssues([])
+      return fetchIssues()
+    }
+
+    const queryToSearch = encodeURIComponent(query)
+    const response = await API_AXIOS_ISSUES.get('/issues', {
+      params: {
+        q: `${queryToSearch} repo:jsguillerme/rocketseat-challenge-github-blog`,
+      },
+    })
+
+    if (response.data.total_count === 0) {
+      throw new Error('Não foi possível encontrar essa publicação')
+    }
+
+    setIssues([])
+
+    response.data.items.map((issue: any) => {
+      return setIssues((state) => {
+        return [
+          ...state,
+          {
+            content: issue.body,
+            createdAt: issue.created_at,
+            id: issue.id,
+            issueNumber: issue.number,
+            quantityComment: issue.comments,
+            repositoryUrl: issue.html_url,
+            title: issue.title,
+            user: {
+              avatarUrl: issue.user.avatar_url,
+              login: issue.user.login,
+              url: issue.user.html_url,
+            },
+            closedAt: issue.closed_at,
+          },
+        ]
+      })
     })
   }
 
@@ -66,8 +113,6 @@ export function IssueProvider({ children }: IssueProviderProps) {
     const response = await API_AXIOS.get(
       `/repos/jsguillerme/rocketseat-challenge-github-blog/issues/${id}`,
     )
-
-    console.log(response.data)
 
     if (!response.data.length) {
       return []
@@ -81,7 +126,9 @@ export function IssueProvider({ children }: IssueProviderProps) {
   }, [])
 
   return (
-    <IssueContext.Provider value={{ getIssueById, fetchIssues, issues }}>
+    <IssueContext.Provider
+      value={{ getIssueById, fetchIssues, fetchIssuesByQuery, issues }}
+    >
       {children}
     </IssueContext.Provider>
   )
